@@ -1,9 +1,9 @@
 class User {
-    constructor(name, surname, books = [], pets = []) {
+    constructor(name, surname) {
         this.name = name
         this.surname = surname
-        this.books = books
-        this.pets = pets
+        this.books = []
+        this.pets = []
     }
 
     getFullName() {
@@ -39,7 +39,11 @@ console.log(user1.getFullName())
 console.log(user1.countPets())
 user1.getBookNames()
 
-const user2 = new User('John', 'Salchichon', [{ title: 'Martin Fierro', author: 'Jose Hernandez' }, { title: 'Mal de amores', author: 'Angeles Mastretta' }], ['Cat', 'Dog']);
+const user2 = new User('John', 'Salchichon')
+user2.addPet('Dog')
+user2.addPet('Cat')
+user2.addBook('Martin Fierro', 'Jose Hernandez')
+user2.addBook('Mal de amores', 'Angeles Mastretta')
 console.log(user2.getFullName())
 console.log(user2.countPets())
 user2.getBookNames()
