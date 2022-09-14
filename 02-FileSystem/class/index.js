@@ -11,7 +11,8 @@ class Container {
             const parseContent = JSON.parse(content)
             return parseContent
         } catch (error) {
-            console.log(error);
+            const content = await fs.promises.writeFile(this.filePath, JSON.stringify([]), 'utf-8')
+            return content
         }
     }
 
@@ -52,24 +53,30 @@ class Container {
     }
 
     async deleteAll() {
-        await fs.promises.writeFile(this.filePath, "", 'utf-8')
+        try {
+            await fs.promises.writeFile(this.filePath, []);
+            console.log('All products deleted');
+        } catch (error) {
+            throw new Error(error, 'Error. Cant delete products');
+        }
     }
 }
 
 // module.exports = Container
 
 const products = new Container('./database.txt');
-// products.save({
-//     title: "The ocean cleanup",
-//     price: 120,
-//     risk: "AAA",
-//     anualReturn: "15%",
-//     quantity: "1",
-//     type: "water",
-//     img: "https://res.cloudinary.com/dbedp2gdb/image/upload/v1659194484/project1_wdomxq.jpg"
-// });
+
+products.save({
+    title: "The ocean cleanup",
+    price: 120,
+    risk: "AAA",
+    anualReturn: "15%",
+    quantity: "1",
+    type: "water",
+    img: "https://res.cloudinary.com/dbedp2gdb/image/upload/v1659194484/project1_wdomxq.jpg"
+});
 
 // products.getById(1);
 // products.getAll();
 // products.deleteById(2);
-products.deleteAll();
+// products.deleteAll();
