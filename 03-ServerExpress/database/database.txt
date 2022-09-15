@@ -1,0 +1,46 @@
+[
+    {
+        "id": "1",
+        "title": "Seabin fundation",
+        "ticker": "SEAB",
+        "price": 100,
+        "risk": "AAB",
+        "anualReturn": "20%",
+        "quantity": "1",
+        "type": "water",
+        "img": "https://res.cloudinary.com/dbedp2gdb/image/upload/v1659194484/project2_rlo8p5.jpg"
+    },
+    {
+        "id": "2",
+        "title": "Renovable verano",
+        "ticker": "REVE",
+        "price": 60,
+        "risk": "ABB",
+        "anualReturn": "25%",
+        "quantity": "1",
+        "type": "energy",
+        "img": "https://res.cloudinary.com/dbedp2gdb/image/upload/v1659194485/project3_zu8ewr.jpg"
+    },
+    {
+        "id": "3",
+        "title": "Sonic cleanup",
+        "ticker": "SONI",
+        "price": 50,
+        "risk": "ABC",
+        "anualReturn": "30%",
+        "quantity": "1",
+        "type": "recycling",
+        "img": "https://res.cloudinary.com/dbedp2gdb/image/upload/v1659194485/project4_hfyfzi.jpg"
+    },
+    {
+        "id": "4",
+        "title": "Eco schools",
+        "ticker": "ESCH",
+        "price": 80,
+        "risk": "AAB",
+        "anualReturn": "20%",
+        "quantity": "1",
+        "type": "recycling",
+        "img": "https://res.cloudinary.com/dbedp2gdb/image/upload/v1659194484/project5_jrrarq.jpg"
+    }
+]
