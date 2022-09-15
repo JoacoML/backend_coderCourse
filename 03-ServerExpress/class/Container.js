@@ -37,8 +37,12 @@ class Container {
     }
 
     async getAll() {
-        const fileContent = await this.#readFile()
-        console.log(fileContent)
+        try {
+            const fileContent = await this.#readFile();
+            return fileContent;
+        } catch (error) {
+            throw new Error(error, 'Error to get all products');
+        }
     }
 
     async deleteById(id) {
