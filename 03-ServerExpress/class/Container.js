@@ -68,18 +68,3 @@ class Container {
 }
 
 module.exports = Container
-
-// products.save({
-//     title: "The ocean cleanup",
-//     price: 120,
-//     risk: "AAA",
-//     anualReturn: "15%",
-//     quantity: "1",
-//     type: "water",
-//     img: "https://res.cloudinary.com/dbedp2gdb/image/upload/v1659194484/project1_wdomxq.jpg"
-// });
-
-// products.getById(1);
-// products.getAll();
-// products.deleteById(2);
-// products.deleteAll();

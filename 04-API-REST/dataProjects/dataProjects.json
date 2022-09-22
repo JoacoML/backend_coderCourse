@@ -1,0 +1,50 @@
+[
+    {
+        "id": "1",
+        "title": "Seabin fundation",
+        "price": 100,
+        "thumbnail": "https://res.cloudinary.com/dbedp2gdb/image/upload/v1659194484/project2_rlo8p5.jpg"
+    },
+    {
+        "id": "2",
+        "title": "Renovable verano",
+        "price": 60,
+        "thumbnail": "https://res.cloudinary.com/dbedp2gdb/image/upload/v1659194485/project3_zu8ewr.jpg"
+    },
+    {
+        "id": "3",
+        "title": "Sonic cleanup",
+        "price": 50,
+        "thumbnail": "https://res.cloudinary.com/dbedp2gdb/image/upload/v1659194485/project4_hfyfzi.jpg"
+    },
+    {
+        "id": "4",
+        "ticker": "ESCH",
+        "price": 80,
+        "thumbnail": "https://res.cloudinary.com/dbedp2gdb/image/upload/v1659194484/project5_jrrarq.jpg"
+    },
+    {
+        "id": "5",
+        "title": "Trash into treasure",
+        "price": 50,
+        "thumbnail": "https://res.cloudinary.com/dbedp2gdb/image/upload/v1659194485/project6_w855gn.jpg"
+    },
+    {
+        "id": "6",
+        "title": "Dronegenuity",
+        "price": 200,
+        "thumbnail": "https://res.cloudinary.com/dbedp2gdb/image/upload/v1659194484/project7_hrmfhi.jpg"
+    },
+    {
+        "id": "7",
+        "title": "Sustainable sewage",
+        "price": 300,
+        "thumbnail": "https://res.cloudinary.com/dbedp2gdb/image/upload/v1659194484/project8_l2hoof.jpg"
+    },
+    {
+        "id": "8",
+        "title": "Green building",
+        "price": 250,
+        "thumbnail": "https://res.cloudinary.com/dbedp2gdb/image/upload/v1659194484/project9_awxz9f.jpg"
+    }
+]
