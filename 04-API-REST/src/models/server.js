@@ -1,12 +1,12 @@
 const express = require("express")
-const cors = require("cors")
-const router = require("../routes/products.route")
+const CORS = require("cors")
+const routerProducts = require("../routes/products.route")
 
 class Server {
   constructor() {
     this.app = express()
     this.port = process.env.PORT
-    this.productsPath = '/api/products'
+    this.productsPath = "/api/products"
 
     // Middlewares
     this.middlewares()
@@ -18,19 +18,18 @@ class Server {
   middlewares() {
 
     // CORS
-    this.app.use(cors());
+    this.app.use(CORS());
     // Server takes the JSON data and transforms it into a JavaScript object.
     this.app.use(express.urlencoded({ extended: true }))
     // Read and parse body 
     this.app.use(express.json())
     // Public directory
-    this.app.use(express.static("public"))
-
+    this.app.use(express.static('/public'))
   }
 
   // Routes
   routes() {
-    this.app.use(this.productsPath, router)
+    this.app.use(this.productsPath, routerProducts)
   }
 
   // Start server
