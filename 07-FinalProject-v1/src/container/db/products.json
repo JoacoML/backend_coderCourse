@@ -1,0 +1,12 @@
+[
+    {
+        "timestamp": "13/10/2022, 09:07:42",
+        "name": "Aro de basket",
+        "description": "El mejor aro de basket del mercado",
+        "code": "01",
+        "pic": "https://http2.mlstatic.com/D_NQ_NP_825301-MLA41035915777_032020-V.webp",
+        "price": 100,
+        "stock": 5,
+        "id": 1
+    }
+]
