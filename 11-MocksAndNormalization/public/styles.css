@@ -1,0 +1,98 @@
+/* This file updates the styles, somehow rudimentary, for the layouts */
+h1 {
+    text-align: center;
+}
+
+h3 {
+    text-align: center;
+}
+
+input {
+    margin: 20px;
+    width: 200px;
+    height: 50px;
+    text-align: center;
+}
+
+input[type = 'text']::placeholder {
+    text-align: center;
+}
+
+button {
+    margin: 20px;
+}
+
+a {
+    color: white;
+}
+
+img {
+    height: 70px;
+    width: 70px;
+}
+
+table {
+    width: 400px;
+    background-color: red;
+    margin: 20px;
+    border-radius: 25px;
+}
+
+th {
+    text-align: center;
+    background-color: blue;
+    color: white;
+}
+
+tr {
+    text-align: center;
+}
+
+/* Classes */
+.blue {
+    color: blue;
+}
+
+.form-table-div {
+    display: flex;
+    justify-content: center;
+}
+
+.green {
+    color: green
+}
+
+.messages-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: lightgray;
+    border-radius: 25px;
+}
+
+/* Id's */
+#h5 {
+    text-align: center;
+}
+
+#fake-product-image {
+    height: 50;
+    width: 50;
+}
+
+#main-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: beige;
+}
+
+#secondary-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: red;
+    margin: 20px;
+    padding: 10px;
+}
