@@ -2,14 +2,12 @@ const mongoose = require('mongoose')
 const { route, advancedOptions} = require('../data/mongoDBData/mongoDbConfig')
 
 class MongoDbContainer {
-    constructor(collectionName, connect) {
+    constructor(collectionName) {
         this.collectionName = collectionName
         // A method to connect to the db
         // To do this we will use mongoose
         // We also need to check that the mongodb is server is running locally on our computer
-        if (connect) {
-            this.connect()
-        }
+        this.connect()
     }
 
 
@@ -22,7 +20,6 @@ class MongoDbContainer {
 
     async add(modelName, sth) {
         try {
-            console.log('Container: Saving');
             let sthSaved = await new modelName(sth).save()
             return sthSaved
         } catch(err) {
@@ -36,18 +33,18 @@ class MongoDbContainer {
             const response = await model.findOne(filterObject)
             return response
         } catch (err) {
-            return err
+            console.log(err);
+            return new Error(err)
         }
     }
 
     async getById(model, id) {
         try {
-            console.log('Container: Getting by id');
-            const user = await model.findOne( {_id : id} )
-            console.log('Container - Found by id: ', user, 'end');
-            return user
+            const response = await model.findOne( {_id : id} )
+            return response
         } catch (err) {
-            return err
+            console.log(err);
+            return new Error(err)
         }
     }
 
@@ -70,7 +67,7 @@ class MongoDbContainer {
     }
 
     async updateFieldById(model, id, object) {
-        console.log('Container - Updating by Id: ');
+        console.log('Container - Updating by Id');
         try {
             const response = await model.updateOne({_id: id}, {$set: object})
             return response

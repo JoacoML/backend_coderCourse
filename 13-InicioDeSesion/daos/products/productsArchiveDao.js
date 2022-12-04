@@ -1,14 +1,14 @@
 const Product = require('../../models/product')
 const Container = require('../../containers/archiveContainer') 
 
-class Products {
+class ProductsArchiveDao {
     constructor() {
-        this.container = new Container('', 'products.txt')
+        this.container = new Container('products.txt')
         this.items = []
-        this.readItems()
+        this.initialRead()
     }
 
-    add(item) {
+    addProduct(item) {
         const prodExists = this.items.findIndex((prod) => prod.id === Number(item.id))
         if (prodExists !== -1) {
             this.items[prodExists].stock = Number(this.items[prodExists].stock)
@@ -34,41 +34,29 @@ class Products {
     decreaseStock(prod) {
         let stock = Number(prod.stock)
         stock -= 1
-        prod.stock = stock
+        const productIndex = this.items.findIndex( (p) => p.id === prod.id)
+        this.items[productIndex].stock = stock
         this.saveToPersistentMemory(this.items)
     }
 
+    deleteUndefinedKeys = (obj) => {
+        Object.keys(obj).forEach( (key) => {
+            if (obj[key] === undefined) {
+                delete obj[key]
+            }
+        })
+    }
+    
     deleteProduct(id) {
         // First, figure out if the product effectively exists
         const convertedId = Number(id)
         const productIndex = this.items.findIndex((prod) => prod.id === convertedId)
         if (productIndex !== -1) {
-            const removed = this.items.splice(productIndex)
+            const removed = this.items.splice(productIndex, 1)
             this.saveToPersistentMemory(this.items)
-            return this.throwSuccess('Product deleted', {deleted: removed[0].toString(), currentArray: this.items.toString()})
+            return this.throwSuccess('Product deleted', {deleted: removed[0], currentArray: this.items})
         } else {
             return this.throwError(' There is no item with that id in the database')
-        }
-
-    }
-
-    editProduct(id, attributes) {
-        // Figure out if the product exists
-        const convertedId = Number(id)
-        const prodIndex = this.items.findIndex((prod) => prod.id === convertedId)
-        if (prodIndex !== -1) {
-            // If the product exists
-            try {
-                const product = this.items[prodIndex]
-                this.items[prodIndex] = {...product, ...attributes}
-                this.saveToPersistentMemory(this.items)
-                return this.throwSuccess('Succesfully modified product. Here is the new one', this.items[prodIndex])
-            } catch (error) {
-                throw new Error(error)
-            }
-        } else {
-            // If it does not exist
-            return this.throwError('Sorry, no product in our db matches the given id')
         }
     }
 
@@ -81,6 +69,10 @@ class Products {
         }
     }
 
+    getAllProducts() {
+        return this.items.length !== 0 ? {items: this.items} : this.throwError('No products in the database')
+    }
+    
     getProduct(id) {
         // Figure out if the product exists
         // In case some douchebag passes the id as a string we will turn it into a number
@@ -95,12 +87,35 @@ class Products {
         }
     }
 
-    getProducts() {
-        return this.items.length !== 0 ? {items: this.items} : this.throwError('No products in the database')
+    async initialRead() {
+        await this.readItems()
+        console.log('Successfully connected to the archives');
+    }
+
+    async updateProduct(id, attributes) {
+        // Figure out if the product exists
+        const convertedId = Number(id)
+        const prodExists = this.items.findIndex((prod) => prod.id === convertedId)
+        // => Remember that the array.findIndex funciton in js returns -1 if there is no match
+        if (prodExists !== -1) { 
+            // If the product exists
+            try {
+                const originalProduct = this.items[prodExists]
+                this.deleteUndefinedKeys(attributes)
+                const newProduct = {...originalProduct, ...attributes}
+                this.items[prodExists] = newProduct
+                this.saveToPersistentMemory(this.items)
+                return this.throwSuccess('Succesfully modified product. Here is the new one', newProduct)
+            } catch (error) {
+                throw new Error(error)
+            }
+        } else {
+            // If it does not exist
+            return this.throwError('Sorry, no product in our db matches the given id')
+        }
     }
 
     hasStock(id) {
-        const product = this.find(id)
         return this.find(id).stock >= 1 
     }
 
@@ -112,13 +127,13 @@ class Products {
         this.container.save(object)
     }
 
-    throwSuccess(message, payload) {
-        return {code: 200, message, payload}
-    }
-
     throwError(message) {
         return {code: 500, message}
     }
+
+    throwSuccess(message, payload) {
+        return {code: 200, message, payload}
+    }
 }
 
-module.exports = new Products()
+module.exports = new ProductsArchiveDao()
