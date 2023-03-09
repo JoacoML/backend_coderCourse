@@ -35,8 +35,6 @@
     "winston": "^3.8.2"
   },
   "devDependencies": {
-    "chai": "^4.3.7",
-    "handlebars": "^4.5.0",
-    "supertest": "^6.3.3"
+    "handlebars": "^4.5.0"
   }
 }

@@ -139,32 +139,5 @@
          ]
       },
       "id": 5
-   },
-   {
-      "timestamp": "22/2/2023 16:10:12",
-      "message": {
-         "_original": {
-            "title": "Prueba",
-            "code": "22222",
-            "thumbnail": "https://detallesorballo.com/wp-content/uploads/2020/09/imagen-de-prueba-320x240-1.jpg",
-            "price": 2000,
-            "stock": 3,
-            "timestamp": "22/2/2023 16:10:12"
-         },
-         "details": [
-            {
-               "message": "\"description\" is required",
-               "path": [
-                  "description"
-               ],
-               "type": "any.required",
-               "context": {
-                  "label": "description",
-                  "key": "description"
-               }
-            }
-         ]
-      },
-      "id": 6
    }
 ]
