@@ -3,8 +3,7 @@ import {
   denormalizeMessages,
 } from "../../utils/normalize.js";
 import { Loggers } from "../../loggers/loggers.js";
-import { daoFactory } from "../../Dao/index.js";
-
+import { daoFactory } from "../../models/Dao/index.js";
 
 const messageDao = daoFactory.getSelectedDao("message");
 
@@ -41,7 +40,7 @@ const addMessage = async (message) => {
       messagesDataId: 1,
       ...normalizedData,
     };
-  
+
     const saveResponse = await messageDao.save(objectToStore);
 
     Loggers.logDebug("--- message save Response ---");
@@ -52,7 +51,6 @@ const addMessage = async (message) => {
 };
 
 const getMessages = async () => {
-
   const daoCall = await messageDao.getAll();
   const response = daoCall[0];
 
@@ -71,7 +69,13 @@ const getMessages = async () => {
   return { normalizedData: response, compression: a / b };
 };
 
+const deleteMessages = async () => {
+  const deleteAll = await messageDao.delete();
+  console.log(deleteAll);
+  return true;
+};
 export const MessageController = {
   addMessage,
   getMessages,
+  deleteMessages,
 };

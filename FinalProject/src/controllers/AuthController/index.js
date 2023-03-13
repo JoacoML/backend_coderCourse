@@ -1,15 +1,10 @@
-import { daoFactory } from "../../Dao/index.js";
 import {Loggers} from "../../loggers/loggers.js";
 import {
-  JWT_UTILS,
-  DATE_UTILS,
-  EMAIL_UTILS,
-  BCRYPT_VALIDATION,
+  JWT_UTILS
 } from "../../utils/index.js";
+import {userService} from "../../models/Service/index.js"
+import { MessageController } from '../MessageController/index.js'
 
-
-const userDao = daoFactory.getSelectedDao("users");
-const cartDao = daoFactory.getSelectedDao("cart");
 
 // HOME
 const home = async (req, res) => {
@@ -24,66 +19,15 @@ const signUpView = async (req, res) => {
 
 const signUp = async (req, res) => {
   try {
-    const { name, lastname, age, phone, adress, email, password } = req.body;
-    if (
-      !name ||
-      !lastname ||
-      !age ||
-      !phone ||
-      !adress ||
-      !email ||
-      !password
-    ) {
-      return res.send({ success: false });
-    }
+    const newUser = req.body;
+    console.log("user", newUser)
 
-    const existUser = await userDao.getOne({ email });
+    const data = await userService.registerUser(newUser);
 
-    if (existUser && existUser.password) {
-      return res.redirect("/api/auth/signup-error");
-    }
-    if (existUser && !existUser.password) {
-      const updateUser = await userDao.updateById(existUser._id, {
-        ...existUser,
-        password,
-      });
-
-      return res.redirect("login");
-    }
-    const UserCart = { timestamp: DATE_UTILS.getTimestamp(), products: [] };
-    const cart = await cartDao.save(UserCart);
-
-    await userDao.save({
-      name,
-      lastname,
-      age,
-      phone,
-      adress,
-      email,
-      password: BCRYPT_VALIDATION.hashPassword(password),
-      cart: cart.id,
-    });
-
-    let subject = "Nuevo usuario";
-    let mailTo = "martinetjuliana@gmail.com";
-    let html = `
-                    <h4>Nuevo registro en Ecommerce!</h4>
-                    <p> Datos:</p>
-                    <ul>
-                    <li> Nombre y apellido: ${name} ${lastname}</li>
-                    <li> Email: ${email}</li>
-                    <li> Teléfono: ${phone}</li>
-                    <li> Edad: ${age}</li>
-                    <li> Direccion: ${adress}</li>
-                    </ul>
-        `;
-    await EMAIL_UTILS.sendEmail(mailTo, subject, html);
-
-    return res.redirect("login");
+    res.redirect("login");
   } catch (error) {
-    res.render("/api/auth/signup-error");
+    res.render("err.hbs");
     Loggers.logError(`error from signUp`);
-    res.send({ success: false });
   }
 };
 
@@ -120,6 +64,8 @@ const logInErr = async (req, res) => {
 // LOGOUT
 
 const logOut = async (req, res) => {
+  await MessageController.deleteMessages()
+
   req.session.destroy();
   res.clearCookie("tokenCookie");
   res.render("logout");
