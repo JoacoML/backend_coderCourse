@@ -1,5 +1,5 @@
 import { daoFactory } from "../../models/Dao/index.js";
-import {Loggers} from '../../loggers/loggers.js'
+import { Loggers } from "../../loggers/loggers.js";
 import {
   DATE_UTILS,
   ERRORS_UTILS,
@@ -10,85 +10,123 @@ import {
 const productDao = daoFactory.getSelectedDao("product");
 
 // /api/products
-const getAll = async (req, res) => {
-  try {
-    const product = await productDao.getAll();
+const getAll =
+  ({ isApi }) =>
+  async (req, res) => {
+    try {
+      const product = await productDao.getAll();
 
-    if (!product) {
-      return res.send({ error: ERRORS_UTILS.MESSAGES.NO_PRODUCT });
+      if (!product) {
+        return res.send({ error: ERRORS_UTILS.MESSAGES.NO_PRODUCT });
+      }
+      isApi ? res.send({ product }) : res.render("products-table", { product });
+    } catch (error) {
+      console.log(error, `error from getAll`);
+      Loggers.logError("error desde el getAll: " + error);
+      res.send({
+        success: false,
+        message: ERRORS_UTILS.MESSAGES.NO_PRODUCT,
+      });
     }
+  };
 
-    res.render("products-table", { product });
-   
-  } catch (error) {
-    console.log(error, `error from getAll`);
-    Loggers.logError('error desde el getAll: ' + error)
-    res.send({ success: false, data: undefined, message: ERRORS_UTILS.MESSAGES.NO_PRODUCT })
-  }
-};
+const getById =
+  ({ isApi }) =>
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const product = await productDao.getById(id);
 
-const getById = async (req, res) => {
-  try{
-  const { id } = req.params;
-  const product = await productDao.getById(id);
-
-  res.send(product)
-} catch (error) {
-  Loggers.logError(error, `error from getById`)
-  console.log(error, `error from getById`);
-  res.send({ success: false, data: undefined, message: ERRORS_UTILS.MESSAGES.NO_PRODUCT })
-}
-};
+      isApi ? res.send({ product }) : res.render("product-Id", { product });
+    } catch (error) {
+      Loggers.logError(error, `error from getById`);
+      console.log(error, `error from getById`);
+      res.send({
+        success: false,
+        message: ERRORS_UTILS.MESSAGES.NO_PRODUCT,
+      });
+    }
+  };
 
 const createProductView = async (req, res) => {
-  res.render("add-products")
-}
+  res.render("add-products");
+};
+const updateProductView = async (req, res) => {
+  const { id } = req.params;
+  const product = await productDao.getById(id);
+  res.render("updateProduct", { product });
+};
 
 const createProduct = async (req, res) => {
   try {
     const { title, description, code, thumbnail, price, stock } = req.body;
-    // con el validador que creamos en el archivo joi validator, podemos invocar al método validateAsync y pasarle las propiedades que creemos seran nuestro producto, y si están bien, nos devolvera el objeto que guardamos en product
-    // si no, saltará al catch
-    const product = await JOI_VALIDATOR.product.validateAsync({
+    const newProduct = await JOI_VALIDATOR.product.validateAsync({
       title,
       description,
       code,
       thumbnail,
       price,
       stock,
-     timestamp: DATE_UTILS.getTimestamp(), 
+      timestamp: DATE_UTILS.getTimestamp(),
     });
 
-    const createdProduct = await productDao.save(product);
-    console.log("newproduct", createdProduct);
-    res.send(createdProduct.id)
-    res.redirect("/api/products");
+    await productDao.save(newProduct);
+    const product = await productDao.getAll();
+
+    res.redirect("/productos");
   } catch (error) {
-    // no seria recomendable guardar logs de errores de input de usuario, que genera joi
-    // normalmente guardariamos errores propios e internos del servidor
     await LOGGER_UTILS.addLog(error);
-    res.redirect('/api/products/')
+    res.render("err.hbs");
+  }
+};
+
+const updateProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, description, code, thumbnail, price, stock } = req.body;
+    console.log("body", req.body);
+    const updateProduct = await JOI_VALIDATOR.product.validateAsync({
+      title,
+      description,
+      code,
+      thumbnail,
+      price,
+      stock,
+      timestamp: DATE_UTILS.getTimestamp(),
+    });
+
+    await productDao.updateById(id, updateProduct);
+    const product = await productDao.getAll();
+
+    res.redirect("/productos");
+  } catch (error) {
+    await LOGGER_UTILS.addLog(error);
+    res.render("err.hbs");
   }
 };
 
 const deleteById = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("id", id);
     await productDao.deleteById(id);
-
-    res.redirect("/api/products");
+    res.redirect("/productos");
   } catch (error) {
-    Loggers.logError(error, `error from deleteById`)
+    Loggers.logError(error, `error from deleteById`);
     console.log(error, `error from deleteById`);
-    res.send({ success: false, data: undefined, message: ERRORS_UTILS.MESSAGES.NO_PRODUCT })
-}
+    res.send({
+      success: false,
+      data: undefined,
+      message: ERRORS_UTILS.MESSAGES.NO_PRODUCT,
+    });
+  }
 };
 
 export const ProductController = {
   getAll,
   getById,
   createProduct,
+  updateProduct,
+  updateProductView,
   createProductView,
   deleteById,
 };
