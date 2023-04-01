@@ -614,5 +614,35 @@
          ]
       },
       "id": 27
+   },
+   {
+      "timestamp": "4/1/2023 8:03:01 PM",
+      "message": {
+         "_original": {
+            "title": "piedras",
+            "description": "piedras de mar",
+            "code": "40",
+            "thumbnail": "jfasfjs",
+            "price": "500",
+            "stock": "3",
+            "timestamp": "4/1/2023 8:03:00 PM"
+         },
+         "details": [
+            {
+               "message": "\"code\" length must be at least 3 characters long",
+               "path": [
+                  "code"
+               ],
+               "type": "string.min",
+               "context": {
+                  "limit": 3,
+                  "value": "40",
+                  "label": "code",
+                  "key": "code"
+               }
+            }
+         ]
+      },
+      "id": 28
    }
 ]
